@@ -1,0 +1,40 @@
+project-new --named campain --stack JAVA_EE_7
+
+########3
+
+su postgres
+psql template1
+template1=# CREATE USER campanha WITH PASSWORD 'campanha@1';
+template1=# CREATE DATABASE CampanhaDB;
+template1=# GRANT ALL PRIVILEGES ON DATABASE CampanhaDB to campanha;
+template1=# \q
+
+su postgres
+bash-4.3$ psql campanhadb
+
+##########3
+
+
+su postgres
+psql template1
+template1=# CREATE USER sociotorcedor WITH PASSWORD 'socio@1';
+template1=# CREATE DATABASE SocioDB;
+template1=# GRANT ALL PRIVILEGES ON DATABASE SocioDB to sociotorcedor;
+template1=# \q
+bash-4.3$ psql sociodb
+
+
+
+
+
+##########################
+
+postgres=# CREATE DATABASE testdb;
+
+createdb -h localhost -p 5432 -U postgres testdb
+password ******
+
+CREATE DATABASE jiradb WITH ENCODING 'UNICODE' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0;
+
+
+#################

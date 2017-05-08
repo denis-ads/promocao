@@ -3,7 +3,6 @@ package br.com.developer.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,26 +34,29 @@ public class Campanha implements Serializable {
 	private static final long serialVersionUID = 1866472873357418589L;
 
 	@Id
-	@Column(name = "ID", nullable = false)
-	@SequenceGenerator(name = "CAMPANHA_SEQ", sequenceName = "CAMPANHA_ID_SEQ", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(generator = "CAMPANHA_SEQ", strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Column(name = "ID", nullable = false)
+    @SequenceGenerator(name = "CAMPANHA_SEQ", sequenceName = "CAMPANHA_ID_SEQ", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "CAMPANHA_SEQ", strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Size(max = 100)
-	@Column(name = "NOME", length = 100)
-	private String nome;
+    @Size(max = 100)
+    @Column(name = "NOME", length = 100)
+    @NotNull
+    private String nome;
 
-	@Column(name = "INICIO_VIGENCIA")
-	@Temporal(TemporalType.DATE)
-	private Date inicioVigencia;
+    @Column(name = "INICIO_VIGENCIA")
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private Date inicioVigencia;
 
-	@Column(name = "FIM_VIGENCIA")
-	@Temporal(TemporalType.DATE)
-	private Date fimVigencia;
+    @Column(name = "FIM_VIGENCIA")
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private Date fimVigencia;
 
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "timeCoracao")
-	private TimeCoracao timeCoracao;
+    @ManyToOne()
+    @JoinColumn(name = "timeCoracao")
+    private TimeCoracao timeCoracao;
 
 	@Version
 	@Column(name = "version")

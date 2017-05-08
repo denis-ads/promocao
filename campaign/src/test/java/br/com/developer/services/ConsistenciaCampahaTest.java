@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import br.com.developer.util.DateUtil;
 
+/**
+ * 
+ *
+ */
 public class ConsistenciaCampahaTest {
     
     @Test

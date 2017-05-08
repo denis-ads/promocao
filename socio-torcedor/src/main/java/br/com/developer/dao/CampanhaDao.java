@@ -34,8 +34,6 @@ public class CampanhaDao extends BaseDao<Campanha, Long>{
         try {
             Query namedQuery = em.createNamedQuery("Campanha.campanhasAtivas");
             namedQuery.setParameter(":dataAtual", new Date());
-            // return em.createQuery(" SELECT o FROM " + objectClass.getSimpleName() + " AS o ",
-            // objectClass).getResultList();
             return namedQuery.getResultList();
         } catch (Exception e) {
             throw new DBException(e);
@@ -82,46 +80,4 @@ public class CampanhaDao extends BaseDao<Campanha, Long>{
         predicateList.toArray(predicates);
         return predicates;
     }*/
-    
-	// public void create(Campanha entity) {
-//  em.persist(entity);
-//}
-
-//public void deleteById(Long id) {
-//  Campanha entity = em.find(Campanha.class, id);
-//  if (entity != null) {
-//      em.remove(entity);
-//  }
-//}
-
-//public Campanha findById(Long id) {
-//  return em.find(Campanha.class, id);
-//}
-
-//public Campanha update(Campanha entity) {
-//  return em.merge(entity);
-//}
-    
-//  TypedQuery<Campanha> findByIdQuery = em
-//          .createQuery(
-//                  "SELECT DISTINCT c FROM Campanha c LEFT JOIN FETCH c.timeCoracao WHERE c.id = :entityId ORDER BY c.id",
-//                  Campanha.class);
-//  findByIdQuery.setParameter("entityId", id);
-
-//  public List<Campanha> listAll(@QueryParam("start") Integer startPosition,
-//  @QueryParam("max") Integer maxResult) {
-//
-//TypedQuery<Campanha> findAllQuery = em
-//      .createQuery(
-//              "SELECT DISTINCT c FROM Campanha c LEFT JOIN FETCH c.timeCoracao ORDER BY c.id",
-//              Campanha.class);
-//if (startPosition != null) {
-//  findAllQuery.setFirstResult(startPosition);
-//}
-//if (maxResult != null) {
-//  findAllQuery.setMaxResults(maxResult);
-//}
-//final List<Campanha> results = findAllQuery.getResultList();
-//return results;
-    
 }

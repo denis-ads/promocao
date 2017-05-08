@@ -29,15 +29,6 @@ public class TimeCoracao implements Serializable {
 	@GeneratedValue(generator = "TIME_CORACAO_SEQ", strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/*
-	 * @Id
-	 * 
-	 * @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 * 
-	 * @Column(name = "id", updatable = false, nullable = false) private Long
-	 * id;
-	 */
-
 	@Size(max = 100)
 	@Column(name = "NOME", length = 100)
 	private String nome;
@@ -46,7 +37,18 @@ public class TimeCoracao implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	public Long getId() {
+	
+	public TimeCoracao() {
+        super();
+    }
+
+    public TimeCoracao(Long id, String nome) {
+        super();
+        this.id = id;
+        this.nome = nome;
+    }
+
+    public Long getId() {
 		return id;
 	}
 

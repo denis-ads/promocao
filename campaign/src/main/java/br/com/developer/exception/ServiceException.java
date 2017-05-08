@@ -2,6 +2,10 @@ package br.com.developer.exception;
 
 import javax.ejb.ApplicationException;
 
+/**
+ * 
+ *
+ */
 @ApplicationException()
 public class ServiceException extends Exception{
 

@@ -5,8 +5,8 @@ project-new --named campain --stack JAVA_EE_7
 su postgres
 psql template1
 template1=# CREATE USER campanha WITH PASSWORD 'campanha@1';
-template1=# CREATE DATABASE CampanhaDB;
-template1=# GRANT ALL PRIVILEGES ON DATABASE CampanhaDB to campanha;
+template1=# CREATE DATABASE Campanhadb;
+template1=# GRANT ALL PRIVILEGES ON DATABASE campanhadb to campanha;
 template1=# \q
 
 su postgres
@@ -18,8 +18,8 @@ bash-4.3$ psql campanhadb
 su postgres
 psql template1
 template1=# CREATE USER sociotorcedor WITH PASSWORD 'socio@1';
-template1=# CREATE DATABASE SocioDB;
-template1=# GRANT ALL PRIVILEGES ON DATABASE SocioDB to sociotorcedor;
+template1=# CREATE DATABASE sociodb;
+template1=# GRANT ALL PRIVILEGES ON DATABASE sociodb to sociotorcedor;
 template1=# \q
 bash-4.3$ psql sociodb
 

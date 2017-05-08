@@ -13,6 +13,9 @@ import br.com.developer.dao.CampanhaDao;
 import br.com.developer.model.Campanha;
 import br.com.developer.model.TimeCoracao;
 
+/**
+ *
+ */
 public class CampanhaServiceTest extends ServiceTestBase{
 
     private CampanhaService service;

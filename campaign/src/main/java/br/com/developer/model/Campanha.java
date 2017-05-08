@@ -3,7 +3,6 @@ package br.com.developer.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "CAMPANHA", schema = "public")
 @NamedQueries({
 		@NamedQuery(name = "Campanha.findAll", query = "Select c from Campanha c"),
-		@NamedQuery(name = "Campanha.findByTimeCoracaoId", query = "Select c from Campanha c where c.timeCoracao.id = :timeCoracaoId"),
-		@NamedQuery(name = "Campanha.campanhasAtivas", query = "Select c from Campanha c where c.fimVigencia >= :dataAtual")})
+		@NamedQuery(name = "Campanha.campanhasAtivasTimeCoracaoId", query = "Select c from Campanha c where c.fimVigencia >= :dataAtual and c.timeCoracao.id = :timeCoracaoId order by c.fimVigencia"),
+		@NamedQuery(name = "Campanha.campanhasAtivas", query = "Select c from Campanha c where c.fimVigencia >= :dataAtual order by c.fimVigencia")})
 @XmlRootElement
 public class Campanha implements Serializable {
 
@@ -42,17 +42,20 @@ public class Campanha implements Serializable {
 
 	@Size(max = 100)
 	@Column(name = "NOME", length = 100)
+	@NotNull
 	private String nome;
 
 	@Column(name = "INICIO_VIGENCIA")
 	@Temporal(TemporalType.DATE)
+	@NotNull
 	private Date inicioVigencia;
 
 	@Column(name = "FIM_VIGENCIA")
 	@Temporal(TemporalType.DATE)
+	@NotNull
 	private Date fimVigencia;
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "timeCoracao")
 	private TimeCoracao timeCoracao;
 

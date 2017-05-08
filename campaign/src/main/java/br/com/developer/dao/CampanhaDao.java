@@ -1,17 +1,24 @@
 package br.com.developer.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import br.com.developer.exception.DBException;
 import br.com.developer.model.Campanha;
+import br.com.developer.model.TimeCoracao;
 
 /**
- * DAO for Campanha
+ * 
  */
 @Stateless
 public class CampanhaDao extends BaseDao<Campanha, Long>{
@@ -41,94 +48,59 @@ public class CampanhaDao extends BaseDao<Campanha, Long>{
             if (maxResult != null) {
                 namedQuery.setMaxResults(maxResult);
             }
-            // return em.createQuery(" SELECT o FROM " + objectClass.getSimpleName() + " AS o ",
-            // objectClass).getResultList();
+
             return namedQuery.getResultList();
         } catch (final Exception e) {
             throw new DBException(e);
         }
     }
-
-    /*public int countPorFiltro(MatriculaFilterDto filtro) throws DBException {
+    
+    public List<Campanha> consultarCampanhasAtivasTimeId(Date data, Long timeCoracaoId, Integer startPosition, Integer maxResult) throws DBException {
         try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Long> criteria = cb.createQuery(Long.class);
-            Root<MatriculaE> root = criteria.from(MatriculaE.class);
-            Predicate[] predicates = montarParametros(filtro, cb, root);
+            final Query namedQuery = em.createNamedQuery("Campanha.campanhasAtivasTimeCoracaoId");
+            namedQuery.setParameter("dataAtual", data);
+            namedQuery.setParameter("timeCoracaoId", timeCoracaoId);
 
-            criteria.select(cb.count(root));
-            criteria.where(predicates);
-
-            Long i = (Long) em.createQuery(criteria).getSingleResult();
-            return i.intValue();
-        } catch (Exception e) {
+            if (startPosition != null) {
+                namedQuery.setFirstResult(startPosition);
+            }
+            if (maxResult != null) {
+                namedQuery.setMaxResults(maxResult);
+            }
+            return namedQuery.getResultList();
+        } catch (final Exception e) {
             throw new DBException(e);
         }
-    }*/
+    }
+    
+    public List<Campanha> consultarCampanhasAtivasTimeCoracaoId(Date data, Long timeCoracaoId, Integer startPosition, Integer maxResult) throws DBException {
+        try {
+            System.out.println("consultarCampanhasAtivasTimeCoracaoId:  " + timeCoracaoId);
 
-/*    private Predicate[] montarParametros(MatriculaFilterDto matriculaFilter, CriteriaBuilder cb, Root<MatriculaE> matriculaRoot) {
-        List<Predicate> predicateList = new ArrayList<Predicate>();
-
-        if (matriculaFilter != null) {
-            if (matriculaFilter.getId() != null && matriculaFilter.getId() != 0) {
-                predicateList.add(cb.equal(matriculaRoot.get("pk"), matriculaFilter.getId()));
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Campanha> criteria = cb.createQuery(Campanha.class);
+            Root<Campanha> root = criteria.from(Campanha.class);
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            if (data != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("fimVigencia"), data));
             }
 
-            if (matriculaFilter.getIdCurso() != null && matriculaFilter.getIdCurso() != 0) {
-                Join<MatriculaE, CursoE> cursoJoin = matriculaRoot.join("curso");
-                predicateList.add(cb.equal(cursoJoin.get("pk"), matriculaFilter.getIdCurso()));
+            if (timeCoracaoId!= null && timeCoracaoId != 0) {
+                Join<Campanha, TimeCoracao> timeCoracaoJoin = root.join("timeCoracao");
+                predicates.add(cb.equal(timeCoracaoJoin.get("id"), timeCoracaoId));
             }
+            
+            Predicate[] preds = new Predicate[predicates.size()];
+            predicates.toArray(preds);
+            criteria.select(root);
+            criteria.where(preds);
 
-            if (matriculaFilter.getIdEstudante() != null && matriculaFilter.getIdEstudante() != 0) {
-                Join<MatriculaE, EstudanteE> estudanteJoin = matriculaRoot.join("estudante");
-                predicateList.add(cb.equal(estudanteJoin.get("pk"), matriculaFilter.getIdEstudante()));
-            }
+             List<Campanha> campanhas = em.createQuery(criteria).getResultList();
+             System.out.println("Campanhas: " + campanhas.size());
+             return campanhas;
+        } catch (final Exception e) {
+            throw new DBException(e);
         }
-
-        Predicate[] predicates = new Predicate[predicateList.size()];
-        predicateList.toArray(predicates);
-        return predicates;
-    }*/
-
-	// public void create(Campanha entity) {
-//  em.persist(entity);
-//}
-
-//public void deleteById(Long id) {
-//  Campanha entity = em.find(Campanha.class, id);
-//  if (entity != null) {
-//      em.remove(entity);
-//  }
-//}
-
-//public Campanha findById(Long id) {
-//  return em.find(Campanha.class, id);
-//}
-
-//public Campanha update(Campanha entity) {
-//  return em.merge(entity);
-//}
-
-//  TypedQuery<Campanha> findByIdQuery = em
-//          .createQuery(
-//                  "SELECT DISTINCT c FROM Campanha c LEFT JOIN FETCH c.timeCoracao WHERE c.id = :entityId ORDER BY c.id",
-//                  Campanha.class);
-//  findByIdQuery.setParameter("entityId", id);
-
-//  public List<Campanha> listAll(@QueryParam("start") Integer startPosition,
-//  @QueryParam("max") Integer maxResult) {
-//
-//TypedQuery<Campanha> findAllQuery = em
-//      .createQuery(
-//              "SELECT DISTINCT c FROM Campanha c LEFT JOIN FETCH c.timeCoracao ORDER BY c.id",
-//              Campanha.class);
-//if (startPosition != null) {
-//  findAllQuery.setFirstResult(startPosition);
-//}
-//if (maxResult != null) {
-//  findAllQuery.setMaxResults(maxResult);
-//}
-//final List<Campanha> results = findAllQuery.getResultList();
-//return results;
-
+    }
+    
 }

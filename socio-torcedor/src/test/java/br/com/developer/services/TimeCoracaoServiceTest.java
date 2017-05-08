@@ -11,7 +11,10 @@ import org.mockito.Mockito;
 import br.com.developer.dao.TimeCoracaoDao;
 import br.com.developer.model.TimeCoracao;
 
-
+/**
+ * 
+ *
+ */
 public class TimeCoracaoServiceTest extends ServiceTestBase{
 
     private TimeCoracaoService service;

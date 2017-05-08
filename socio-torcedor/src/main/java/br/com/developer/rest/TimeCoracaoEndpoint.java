@@ -26,7 +26,6 @@ import br.com.developer.services.TimeCoracaoService;
 /**
  * 
  */
-@Stateless
 @Path("/timecoracao")
 public class TimeCoracaoEndpoint {
 

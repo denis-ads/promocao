@@ -20,115 +20,62 @@ import junit.framework.Assert;
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
- * https://github.com/resteasy/resteasy-examples/blob/master/jaxrs-2.0/simple-client/src/test/java/org/jboss/test/SimpleClientTest.java
+ *          https://github.com/resteasy/resteasy-examples/blob/master/jaxrs-2.0/simple-client/src/test/java/org/jboss/test/SimpleClientTest.java
  */
-public class SimpleClientTest
-{
+public class SimpleClientTest {
+    
     @Test
-    public void teetete(){
-        try{
-            System.out.println("denis");
+    public void teetete() {
+        try {
             final Client client = ClientBuilder.newBuilder().build();
-            final List<Campanha> list = client.target("http://localhost:8082/campaign/rest/campanhas").request().accept(MediaType.APPLICATION_JSON).get(new GenericType<List<Campanha>>(){});
+            final List<Campanha> list = client.target("http://localhost:8082/campaign/rest/campanhas").request().accept(
+                            MediaType.APPLICATION_JSON).get(new GenericType<List<Campanha>>() {});
             for (final Campanha campanha : list) {
                 System.out.println(campanha);
             }
-        }catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Ignore
+    public void testCampanha() throws Exception {
+        // fill out a query param and execute a get request
+        final Client client = ClientBuilder.newClient();
+        final WebTarget target = client.target("http://localhost:9095/customers");
+        try {
+            // extract customer directly expecting success
+            final Campanha cust = target.queryParam("name", "Bill").request().get(Campanha.class);
+            Assert.assertEquals("Bill", cust.getNome());
+        } finally {
+            client.close();
+        }
+    }
 
     @Ignore
-   public void testCampanha() throws Exception
-   {
-      // fill out a query param and execute a get request
-      final Client client = ClientBuilder.newClient();
-      final WebTarget target = client.target("http://localhost:9095/customers");
-      try
-      {
-         // extract customer directly expecting success
-          final Campanha cust = target.queryParam("name", "Bill").request().get(Campanha.class);
-         Assert.assertEquals("Bill", cust.getNome());
-      }
-      finally
-      {
-         client.close();
-      }
-   }
+    public void testAsyncCallback() throws Exception {
+        // fill out a query param and execute a get request
+        final Client client = ClientBuilder.newClient();
+        final WebTarget target = client.target("http://localhost:9095/customers");
+        try {
+            // execute in background
+            final CountDownLatch latch = new CountDownLatch(1);
+            target.queryParam("name", "Bill").request().async().get(new InvocationCallback<Campanha>() {
+                @Override
+                public void completed(Campanha customer) {
+                    System.out.println("Obtained customer: " + customer.getNome());
+                    latch.countDown();
+                }
 
-/*
-   @Ignore
-   public void testTemplate() throws Exception
-   {
-      // fill out a path param and execute a get request
-      final Client client = ClientBuilder.newClient();
-      final WebTarget target = client.target("http://localhost:9095/customers/{id}");
-      final Response response = target.resolveTemplate("id", "12345").request().get();
-      try
-      {
-         Assert.assertEquals(200, response.getStatus());
-         final Campanha cust = response.readEntity(Campanha.class);
-         Assert.assertEquals("Bill", cust.getNome());
-      }
-      finally
-      {
-         response.close();
-         client.close();
-      }
-   }
-
-   @Ignore
-   public void testAsync() throws Exception
-   {
-      // fill out a query param and execute a get request
-      final Client client = ClientBuilder.newClient();
-      final WebTarget target = client.target("http://localhost:9095/customers");
-      try
-      {
-         // execute in background
-         final Future<Campanha> future = target.queryParam("name", "Bill").request().async().get(Campanha.class);
-         // wait 10 seconds for a response
-         final Campanha cust = future.get(10, TimeUnit.SECONDS);
-         Assert.assertEquals("Bill", cust.getNome());
-      }
-      finally
-      {
-         client.close();
-      }
-   }*/
-
-   @Ignore
-   public void testAsyncCallback() throws Exception
-   {
-      // fill out a query param and execute a get request
-      final Client client = ClientBuilder.newClient();
-      final WebTarget target = client.target("http://localhost:9095/customers");
-      try
-      {
-         // execute in background
-         final CountDownLatch latch = new CountDownLatch(1);
-         target.queryParam("name", "Bill").request().async().get(new InvocationCallback<Campanha>()
-         {
-            @Override
-            public void completed(Campanha customer)
-            {
-               System.out.println("Obtained customer: " + customer.getNome());
-               latch.countDown();
-            }
-
-            @Override
-            public void failed(Throwable error)
-            {
-               latch.countDown();
-            }
-         });
-         // await for callback to wake us up
-         latch.await(10, TimeUnit.SECONDS);
-      }
-      finally
-      {
-         client.close();
-      }
-   }
+                @Override
+                public void failed(Throwable error) {
+                    latch.countDown();
+                }
+            });
+            // await for callback to wake us up
+            latch.await(10, TimeUnit.SECONDS);
+        } finally {
+            client.close();
+        }
+    }
 }

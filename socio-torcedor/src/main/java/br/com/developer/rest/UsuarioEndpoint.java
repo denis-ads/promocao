@@ -1,8 +1,8 @@
 package br.com.developer.rest;
 
+import java.util.List;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.OptimisticLockException;
 import javax.ws.rs.Consumes;
@@ -17,16 +17,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
 
 import br.com.developer.exception.ServiceException;
+import br.com.developer.model.Campanha;
 import br.com.developer.model.Usuario;
 import br.com.developer.services.UsuarioService;
 
 /**
  *
  */
-@Stateless
 @Path("/usuarios")
 public class UsuarioEndpoint {
 
@@ -40,8 +39,9 @@ public class UsuarioEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Usuario entity) {
         try {
-            entity = usuarioService.create(entity);
-            return Response.created(UriBuilder.fromResource(UsuarioEndpoint.class).path(String.valueOf(entity.getId())).build()).build();
+            List<Campanha> campanhas = usuarioService.cadastrarUsuario(entity);
+            return Response.ok(campanhas).build();
+            //return Response.created(UriBuilder.fromResource(UsuarioEndpoint.class).path(String.valueOf(entity.getId())).build()).build();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -125,91 +125,3 @@ public class UsuarioEndpoint {
     }
 
 }
-//	@PersistenceContext(unitName = "campaign-persistence-unit")
-//	private EntityManager em;
-//
-//	@POST
-//	@Consumes("application/json")
-//	public Response create(Usuario entity) {
-//		em.persist(entity);
-//		return Response.created(
-//				UriBuilder.fromResource(UsuarioEndpoint.class)
-//						.path(String.valueOf(entity.getId())).build()).build();
-//	}
-//
-//	@DELETE
-//	@Path("/{id:[0-9][0-9]*}")
-//	public Response deleteById(@PathParam("id") Long id) {
-//		Usuario entity = em.find(Usuario.class, id);
-//		if (entity == null) {
-//			return Response.status(Status.NOT_FOUND).build();
-//		}
-//		em.remove(entity);
-//		return Response.noContent().build();
-//	}
-//
-//	@GET
-//	@Path("/{id:[0-9][0-9]*}")
-//	@Produces("application/json")
-//	public Response findById(@PathParam("id") Long id) {
-//		TypedQuery<Usuario> findByIdQuery = em
-//				.createQuery(
-//						"SELECT DISTINCT u FROM Usuario u LEFT JOIN FETCH u.timeCoracao WHERE u.id = :entityId ORDER BY u.id",
-//						Usuario.class);
-//		findByIdQuery.setParameter("entityId", id);
-//		Usuario entity;
-//		try {
-//			entity = findByIdQuery.getSingleResult();
-//		} catch (NoResultException nre) {
-//			entity = null;
-//		}
-//		if (entity == null) {
-//			return Response.status(Status.NOT_FOUND).build();
-//		}
-//		return Response.ok(entity).build();
-//	}
-//
-//	@GET
-//	@Produces("application/json")
-//	public List<Usuario> listAll(@QueryParam("start") Integer startPosition,
-//			@QueryParam("max") Integer maxResult) {
-//		TypedQuery<Usuario> findAllQuery = em
-//				.createQuery(
-//						"SELECT DISTINCT u FROM Usuario u LEFT JOIN FETCH u.timeCoracao ORDER BY u.id",
-//						Usuario.class);
-//		if (startPosition != null) {
-//			findAllQuery.setFirstResult(startPosition);
-//		}
-//		if (maxResult != null) {
-//			findAllQuery.setMaxResults(maxResult);
-//		}
-//		final List<Usuario> results = findAllQuery.getResultList();
-//		return results;
-//	}
-//
-//	@PUT
-//	@Path("/{id:[0-9][0-9]*}")
-//	@Consumes("application/json")
-//	public Response update(@PathParam("id") Long id, Usuario entity) {
-//		if (entity == null) {
-//			return Response.status(Status.BAD_REQUEST).build();
-//		}
-//		if (id == null) {
-//			return Response.status(Status.BAD_REQUEST).build();
-//		}
-//		if (!id.equals(entity.getId())) {
-//			return Response.status(Status.CONFLICT).entity(entity).build();
-//		}
-//		if (em.find(Usuario.class, id) == null) {
-//			return Response.status(Status.NOT_FOUND).build();
-//		}
-//		try {
-//			entity = em.merge(entity);
-//		} catch (OptimisticLockException e) {
-//			return Response.status(Response.Status.CONFLICT)
-//					.entity(e.getEntity()).build();
-//		}
-//
-//		return Response.noContent().build();
-//	}
-//}

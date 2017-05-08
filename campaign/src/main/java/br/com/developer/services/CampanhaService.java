@@ -12,10 +12,12 @@ import br.com.developer.dao.CampanhaDao;
 import br.com.developer.exception.DBException;
 import br.com.developer.exception.ServiceException;
 import br.com.developer.model.Campanha;
+import br.com.developer.model.TimeCoracao;
 import br.com.developer.util.DateUtil;
 
 /**
- * DAO for Campanha
+ * 
+ *
  */
 @Stateless
 public class CampanhaService {
@@ -23,6 +25,8 @@ public class CampanhaService {
     @Inject
     private CampanhaDao dao;
 
+    @Inject
+    private TimeCoracaoService timeCoracaoService;
 
     @Inject
     @Evento
@@ -39,6 +43,8 @@ public class CampanhaService {
                 update(campanhaAtualizar);
 
             }
+            TimeCoracao timeCoracao = timeCoracaoService.findById(campanha.getTimeCoracao().getId());
+            campanha.setTimeCoracao(timeCoracao);
             create(campanha);
             System.out.println("denis teste666");
             acionarEvento(campanha);
@@ -136,13 +142,13 @@ public class CampanhaService {
         }
     }
 
-    public List<Campanha> consultarCampanhasAtivas(Date data, Integer startPosition, Integer maxResult) throws ServiceException {
+    public List<Campanha> consultarCampanhasAtivas(Date fimVigencia, Long timeCoracaoId, Integer startPosition, Integer maxResult) throws ServiceException {
         try {
-            return dao.consultarCampanhasAtivas(data, startPosition, maxResult);
+            return dao.consultarCampanhasAtivasTimeCoracaoId(fimVigencia, timeCoracaoId, startPosition, maxResult);
 
         } catch (final DBException e) {
             throw new ServiceException(e);
         }
-
     }
+    
 }

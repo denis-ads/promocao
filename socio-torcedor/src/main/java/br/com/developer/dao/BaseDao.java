@@ -1,5 +1,5 @@
-
 package br.com.developer.dao;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -16,7 +16,6 @@ import br.com.developer.exception.DBException;
 public abstract class BaseDao<T, K> {
 
     private static final String SELECT_ALL = ".selectAll";
-    private static final String COUNT = ".count";
 
     @PersistenceContext(unitName = "socio-persistence-unit")
     protected EntityManager em;
@@ -80,24 +79,6 @@ public abstract class BaseDao<T, K> {
     public List<T> listarTodos(Class objectClass) throws DBException {
         try {
             return em.createNamedQuery(objectClass.getSimpleName().concat(SELECT_ALL)).getResultList();
-            // return em.createQuery(" SELECT o FROM " + objectClass.getSimpleName() + " AS o ",
-            // objectClass).getResultList();
-        } catch (final Exception e) {
-            throw new DBException(e);
-        }
-    }
-
-    /**
-     * TODO PENDENTE
-     *
-     * @param objectClass
-     * @return
-     * @throws DBException
-     */
-    public int countPorFiltro(Class objectClass) throws DBException {
-        try {
-            final int count = (Integer) em.createNamedQuery(objectClass.getSimpleName().concat(COUNT)).getSingleResult();
-            return count;
         } catch (final Exception e) {
             throw new DBException(e);
         }
@@ -118,12 +99,5 @@ public abstract class BaseDao<T, K> {
     public Class<?> getDAOInterfaceClass() {
         return this.getClass().getInterfaces()[0];
     }
-
-    // public T salvar(T objeto) throws DBException {
-    // if (objeto.getId() == null) {
-    // return inserir(objeto);
-    // }
-    // return atualizar(objeto);
-    // }
 
 }

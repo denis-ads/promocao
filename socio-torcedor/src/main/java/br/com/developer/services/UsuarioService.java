@@ -1,6 +1,7 @@
 package br.com.developer.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -9,18 +10,16 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-//import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-//import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-//import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-
+import br.com.developer.CampanhaCache;
 import br.com.developer.dao.UsuarioDao;
 import br.com.developer.exception.DBException;
 import br.com.developer.exception.ServiceException;
 import br.com.developer.model.Campanha;
+import br.com.developer.model.TimeCoracao;
 import br.com.developer.model.Usuario;
 
 /**
- * DAO for Usuario
+ * 
  */
 @Stateless
 public class UsuarioService {
@@ -28,12 +27,72 @@ public class UsuarioService {
     @Inject
     private UsuarioDao dao;
 
-    public Usuario  create(Usuario entity) throws ServiceException {
+    @Inject
+    private TimeCoracaoService timeCoracaoService;
+
+    public Usuario create(Usuario entity) throws ServiceException {
         try {
+
             return dao.create(entity);
         } catch (final DBException e) {
             throw new ServiceException(e);
         }
+    }
+
+    public List<Campanha> cadastrarUsuario(Usuario entity) throws ServiceException {
+        try { 
+            TimeCoracao timeCoracao = timeCoracaoService.findById(entity.getTimeCoracao().getId());
+            entity.setTimeCoracao(timeCoracao);
+            Optional<Usuario> usuario = dao.findByEmail(entity.getEmail());
+            List<Campanha> list = null;
+            if(usuario.isPresent()){
+                list = verificarCampanhasAssociadas(usuario);
+            }else{
+                create(entity);
+                list = buscarCampanhasDisponiveis();
+            }
+            
+            return list;
+        } catch (final DBException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Essa regra esta estranha, pois falta requisitos para associar usuario a uma campanha
+     * 
+     * @param usuario
+     * @return List<Campanha>
+     */
+    private List<Campanha> buscarCampanhasDisponiveis() {
+        
+        final Client client = ClientBuilder.newBuilder().build();
+        String string = "http://localhost:8082/campaign/rest/campanhas";
+        final List<Campanha> list = client.target(string).request().accept(MediaType.APPLICATION_JSON).get(
+                        new GenericType<List<Campanha>>() {});
+        return list;
+    }
+
+    /**
+     * Essa regra esta estranha, pois falta requisitos para associar usuario a uma campanha
+     * 
+     * @param usuario
+     * @return List<Campanha>
+     */
+    private List<Campanha> verificarCampanhasAssociadas(Optional<Usuario> usuario) {
+        
+        List<Campanha> campanhas = CampanhaCache.getCampanhas(usuario.get().getTimeCoracao().getId());
+
+        if(campanhas == null ){
+            final Client client = ClientBuilder.newBuilder().build();
+            String string = "http://localhost:8082/campaign/rest/campanhas?timeCoracaoId=" + usuario.get().getTimeCoracao().getId();
+            campanhas = client.target(string).request().accept(MediaType.APPLICATION_JSON).get(
+                            new GenericType<List<Campanha>>() {});
+            
+            CampanhaCache.adicionarCache(usuario.get().getTimeCoracao().getId(), campanhas);
+        }
+        
+        return campanhas;
     }
 
     public void deleteById(Long id) throws ServiceException {
@@ -43,7 +102,7 @@ public class UsuarioService {
             if (entity == null) {
                 throw new IllegalArgumentException("Objeto não encontrado");
             }
-                dao.delete(entity);
+            dao.delete(entity);
         } catch (final DBException e) {
             throw new ServiceException(e);
         }
@@ -66,27 +125,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> listAll(Integer startPosition, Integer maxResult) {
-       /* try{
-            System.out.println("denis");
-            final ResteasyClient client = new ResteasyClientBuilder().build();
-            final List<Campanha> list = client.target("http://localhost:8082/campaign/rest/campanhas").request().accept(MediaType.APPLICATION_JSON).get(new GenericType<List<Campanha>>(){});
-            for (final Campanha campanha : list) {
-                System.out.println(campanha);
-            }
-        }catch (final Exception e) {
-            e.printStackTrace();
-        }*/
-        try{
-            System.out.println("denis");
-            final Client client = ClientBuilder.newBuilder().build();
-            final List<Campanha> list = client.target("http://localhost:8082/campaign/rest/campanhas").request().accept(MediaType.APPLICATION_JSON).get(new GenericType<List<Campanha>>(){});
-            for (final Campanha campanha : list) {
-                System.out.println(campanha);
-            }
-        }catch (final Exception e) {
-            e.printStackTrace();
-        }
         return dao.listAll(startPosition, maxResult);
     }
 
-  }
+}

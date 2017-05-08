@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 import br.com.developer.model.TimeCoracao;
 
 /**
- * DAO for TimeCoracao
+ * 
  */
 @Stateless
 public class TimeCoracaoDao extends BaseDao<TimeCoracao, Long>{

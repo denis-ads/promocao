@@ -1,5 +1,6 @@
 package br.com.developer;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,8 +11,13 @@ import javax.inject.Inject;
 import br.com.developer.dao.CampanhaDao;
 import br.com.developer.model.Campanha;
 
+/**
+ * 
+ *
+ */
 @RequestScoped
-public class EventConsumer {
+public class EventConsumer implements Serializable{
+
     @Inject
     private CampanhaDao dao;
 

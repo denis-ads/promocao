@@ -2,7 +2,6 @@ package br.com.developer.rest;
 
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.OptimisticLockException;
 import javax.ws.rs.Consumes;
@@ -26,7 +25,6 @@ import br.com.developer.services.CampanhaService;
 /**
  * 
  */
-@Stateless
 @Path("/campanhas")
 public class CampanhaEndpoint {
 

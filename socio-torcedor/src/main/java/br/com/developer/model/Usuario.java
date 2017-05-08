@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -26,7 +27,9 @@ import org.hibernate.validator.constraints.Email;
 @Table(name = "USUARIO", schema = "public")
 @NamedQueries({
 		@NamedQuery(name = "Usuario.findAll", query = "Select u from Usuario u"),
-		@NamedQuery(name = "Usuario.findByTimeCoracaoId", query = "Select u from Usuario u where u.timeCoracao.id = :timeCoracaoId")})
+		@NamedQuery(name = "Usuario.findByTimeCoracaoId", query = "Select u from Usuario u where u.timeCoracao.id = :timeCoracaoId"),
+		@NamedQuery(name = "Usuario.findbyEmail", query = "Select u from Usuario u where u.email = :email")
+		})
 @XmlRootElement
 public class Usuario implements Serializable {
 
@@ -38,13 +41,15 @@ public class Usuario implements Serializable {
 	@GeneratedValue(generator = "USUARIO_SEQ", strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Size(max = 100)
     @Column(name = "NOME", length = 100)
+    @Size(max = 100)
+    @NotNull
     private String nome;
 
+    @Column(name = "EMAIL", length = 50, unique=true)
+    @Email
 	@Size(max = 50)
-	@Column(name = "EMAIL", length = 50)
-	@Email
+	@NotNull
 	private String email;
 
 	@Column(name = "NASCIMENTO")
@@ -61,7 +66,6 @@ public class Usuario implements Serializable {
 
 	public Usuario() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public Usuario(String nome, String email, Date nascimento) {

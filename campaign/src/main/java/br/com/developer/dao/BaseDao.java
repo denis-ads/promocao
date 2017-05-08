@@ -16,11 +16,10 @@ import br.com.developer.exception.DBException;
 public abstract class BaseDao<T, K> {
 
     private static final String SELECT_ALL = ".selectAll";
-    private static final String COUNT = ".count";
+    //private static final String COUNT = ".count";
 
     @PersistenceContext(unitName = "campaign-persistence-unit")
     protected EntityManager em;
-
 
     public void flush() {
         this.em.flush();
@@ -87,22 +86,6 @@ public abstract class BaseDao<T, K> {
         }
     }
 
-    /**
-     * TODO PENDENTE
-     * 
-     * @param objectClass
-     * @return
-     * @throws DBException
-     */
-    public int countPorFiltro(Class objectClass) throws DBException {
-        try {
-            int count = (Integer) em.createNamedQuery(objectClass.getSimpleName().concat(COUNT)).getSingleResult();
-            return count;
-        } catch (Exception e) {
-            throw new DBException(e);
-        }
-    }
-
     public void detach(T entity) {
         em.detach(entity);
     }
@@ -118,6 +101,22 @@ public abstract class BaseDao<T, K> {
     public Class<?> getDAOInterfaceClass() {
         return this.getClass().getInterfaces()[0];
     }
+    
+    /**
+     * TODO PENDENTE
+     * 
+     * @param objectClass
+     * @return
+     * @throws DBException
+     */
+   /* public int countPorFiltro(Class objectClass) throws DBException {
+        try {
+            int count = (Integer) em.createNamedQuery(objectClass.getSimpleName().concat(COUNT)).getSingleResult();
+            return count;
+        } catch (Exception e) {
+            throw new DBException(e);
+        }
+    }*/
 
     // public T salvar(T objeto) throws DBException {
     // if (objeto.getId() == null) {

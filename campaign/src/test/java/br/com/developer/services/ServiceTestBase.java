@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 
 /**
  * 
- * @author denis
  *
  */
 public class ServiceTestBase {

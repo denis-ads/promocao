@@ -11,7 +11,7 @@ import br.com.developer.exception.ServiceException;
 import br.com.developer.model.TimeCoracao;
 
 /**
- * DAO for TimeCoracao
+ * 
  */
 @Stateless
 public class TimeCoracaoService {

@@ -55,7 +55,7 @@ public class CampanhaService {
             throw new ServiceException(e);
         }
 	}
-
+	
 	public List<Campanha> listAll(Integer startPosition, Integer maxResult) {
 	    return dao.listAll(startPosition, maxResult);
 	}

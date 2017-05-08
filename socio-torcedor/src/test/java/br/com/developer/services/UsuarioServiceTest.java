@@ -13,6 +13,10 @@ import br.com.developer.dao.UsuarioDao;
 import br.com.developer.model.TimeCoracao;
 import br.com.developer.model.Usuario;
 
+/**
+ * 
+ *
+ */
 public class UsuarioServiceTest extends ServiceTestBase {
 
     private UsuarioService service;

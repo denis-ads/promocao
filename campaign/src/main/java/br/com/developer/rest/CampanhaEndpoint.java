@@ -3,7 +3,6 @@ package br.com.developer.rest;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.OptimisticLockException;
 import javax.ws.rs.Consumes;
@@ -25,9 +24,9 @@ import br.com.developer.model.Campanha;
 import br.com.developer.services.CampanhaService;
 
 /**
+ * 
  *
  */
-@Stateless
 @Path("/campanhas")
 public class CampanhaEndpoint {
 
@@ -86,9 +85,9 @@ public class CampanhaEndpoint {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult) {
+    public Response listAll(@QueryParam("timeCoracaoId") Long timeCoracaoId,@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult) {
         try {
-            return Response.ok(campanhaService.consultarCampanhasAtivas(new Date(), startPosition, maxResult)).build();
+            return Response.ok(campanhaService.consultarCampanhasAtivas(new Date(),timeCoracaoId, startPosition, maxResult)).build();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();

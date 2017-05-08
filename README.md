@@ -4,7 +4,7 @@ Summary: The quickstarts demonstrate Java EE 7 and a few additional technologies
 
 Introduction
 ------------
-
+clean package wildfly-swarm:run
 
 These quickstarts run on JBoss WildFly. This version uses the correct dependencies and ensures you test and compile against your runtime environment.
 

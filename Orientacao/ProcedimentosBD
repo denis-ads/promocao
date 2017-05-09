@@ -1,6 +1,4 @@
-project-new --named campain --stack JAVA_EE_7
-
-########3
+########
 
 su postgres
 psql template1
@@ -23,18 +21,3 @@ template1=# GRANT ALL PRIVILEGES ON DATABASE sociodb to sociotorcedor;
 template1=# \q
 bash-4.3$ psql sociodb
 
-
-
-
-
-##########################
-
-postgres=# CREATE DATABASE testdb;
-
-createdb -h localhost -p 5432 -U postgres testdb
-password ******
-
-CREATE DATABASE jiradb WITH ENCODING 'UNICODE' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0;
-
-
-#################

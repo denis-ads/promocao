@@ -122,6 +122,23 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jacoco</groupId>
+										<artifactId>
+											jacoco-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.7.2.201409121644,)
+										</versionRange>
+										<goals>
+											<goal>prepare-agent</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -228,16 +245,26 @@
 		    <version>3.1.2.Final</version>
 		    <scope>test</scope>
 		</dependency>
-		<!-- <dependency>
-            <groupId>log4jwebtracker</groupId>
-            <artifactId>log4jwebtracker</artifactId>
-            <version>1.0.2</version>
-        </dependency> -->
+		<dependency>
+		    <groupId>org.wildfly.swarm</groupId>
+		    <artifactId>messaging</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.wildfly.swarm</groupId>
+		    <artifactId>msc</artifactId>
+		</dependency>
 		<dependency>
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-core</artifactId>
             <version>1.65.0</version>
         </dependency>
+		
+		<!-- <dependency>
+            <groupId>log4jwebtracker</groupId>
+            <artifactId>log4jwebtracker</artifactId>
+            <version>1.0.2</version>
+        </dependency> 
+        -->
 			
 			<!-- <dependency>
 			<groupId>io.swagger</groupId>
@@ -255,11 +282,7 @@
 	      <artifactId>logging</artifactId>
 	    </dependency>
 	    -->    
-	    <!-- <dependency>
-		    <groupId>org.jboss.resteasy</groupId>
-		    <artifactId>resteasy-jaxrs</artifactId>
-		    <version>3.1.2.Final</version>
-		</dependency> -->			 
+		 
 		<!-- 
 		<dependency>
 		  <groupId>javax.enterprise</groupId>
@@ -268,25 +291,14 @@
 		  <scope>provided</scope>
 		</dependency>
 		<dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>infinispan</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs</artifactId>
-    </dependency>
-	<dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-jsonp</artifactId>
-    </dependency> 
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>monitor</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>cdi-jaxrsapi</artifactId>
-    </dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>infinispan</artifactId>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>monitor</artifactId>
+	    </dependency>
+    
     -->
 	</dependencies>
  <profiles>

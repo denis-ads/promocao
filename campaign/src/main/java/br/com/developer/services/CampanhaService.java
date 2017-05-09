@@ -7,8 +7,8 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import br.com.developer.Evento;
 import br.com.developer.dao.CampanhaDao;
+import br.com.developer.event.Evento;
 import br.com.developer.exception.DBException;
 import br.com.developer.exception.ServiceException;
 import br.com.developer.model.Campanha;
@@ -16,7 +16,7 @@ import br.com.developer.model.TimeCoracao;
 import br.com.developer.util.DateUtil;
 
 /**
- * 
+ *
  *
  */
 @Stateless
@@ -36,17 +36,14 @@ public class CampanhaService {
     public Campanha cadastrarCampanha(final Campanha campanha) throws ServiceException {
         try {
             final List<Campanha> campanhas = dao.consultarCampanhasAtivas(campanha.getFimVigencia(), null, null);
-            System.out.println("denis consulta");
             verificarConsistenciaVigencias(campanha, campanhas);
             for (final Campanha campanhaAtualizar : campanhas) {
-                System.out.println("atualizar: " + campanha);
                 update(campanhaAtualizar);
-
             }
-            TimeCoracao timeCoracao = timeCoracaoService.findById(campanha.getTimeCoracao().getId());
+            final TimeCoracao timeCoracao = timeCoracaoService.findById(campanha.getTimeCoracao().getId());
             campanha.setTimeCoracao(timeCoracao);
             create(campanha);
-            System.out.println("denis teste666");
+
             acionarEvento(campanha);
 
         } catch (final DBException e) {
@@ -56,11 +53,7 @@ public class CampanhaService {
     }
 
     public void acionarEvento(final Campanha campanha) {
-        System.out.println("vai acionar evento: " + campanha);
-        System.out.println("eventoCampanha: " + eventoCampanha);
-
         eventoCampanha.fire(campanha);
-        System.out.println("Acionou evento");
     }
 
     public void verificarConsistenciaVigencias(Campanha campanha, List<Campanha> campanhas) {
@@ -150,5 +143,5 @@ public class CampanhaService {
             throw new ServiceException(e);
         }
     }
-    
+
 }

@@ -22,16 +22,30 @@
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<version>${version.wildfly-swarm}</version>
 				<executions>
-					<execution>
+ 					<execution>
 						<goals>
 							<goal>package</goal>
 						</goals>
 					</execution>
+					<!-- <execution>
+			            <id>package</id>
+			          </execution>
+			          <execution>
+			            <id>start</id>
+			            <configuration>
+			              <useUberJar>true</useUberJar>
+			            </configuration>
+			          </execution>
+			          <execution>
+			            <id>stop</id>
+			          </execution> -->
 				</executions>
 				<configuration>
+          			<!-- <mainClass>br.com.developer.Main</mainClass> -->
 					<properties>
 						<swarm.context.path>campaign</swarm.context.path>
 	                    <swarm.http.port>8082</swarm.http.port>
+	                    <swarm.bind.address>127.0.0.1</swarm.bind.address>
 					</properties>
 				</configuration>
 			</plugin>
@@ -122,6 +136,23 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jacoco</groupId>
+										<artifactId>
+											jacoco-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.7.2.201409121644,)
+										</versionRange>
+										<goals>
+											<goal>prepare-agent</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -206,16 +237,27 @@
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>cdi-config</artifactId>
 		</dependency>
-		<!-- <dependency>
-            <groupId>log4jwebtracker</groupId>
-            <artifactId>log4jwebtracker</artifactId>
-            <version>1.0.2</version>
-        </dependency> -->
+		
+		<dependency>
+		    <groupId>org.wildfly.swarm</groupId>
+		    <artifactId>messaging</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.wildfly.swarm</groupId>
+		    <artifactId>msc</artifactId>
+		</dependency>
 		<dependency>
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-core</artifactId>
             <version>1.65.0</version>
         </dependency>
+		
+		<!-- <dependency>
+            <groupId>log4jwebtracker</groupId>
+            <artifactId>log4jwebtracker</artifactId>
+            <version>1.0.2</version>
+        </dependency> 
+        -->
         <!-- <dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jaxrs</artifactId>
@@ -230,25 +272,25 @@
 		  <scope>provided</scope>
 		</dependency>
 		<dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>infinispan</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs</artifactId>
-    </dependency>
-	<dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs-jsonp</artifactId>
-    </dependency> 
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>monitor</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>cdi-jaxrsapi</artifactId>
-    </dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>infinispan</artifactId>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>jaxrs</artifactId>
+	    </dependency>
+		<dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>jaxrs-jsonp</artifactId>
+	    </dependency> 
+	    <dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>monitor</artifactId>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>cdi-jaxrsapi</artifactId>
+	    </dependency>
     -->
 	</dependencies>
 	<profiles>

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.event.Event;
+import javax.jms.JMSContext;
+import javax.jms.Topic;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +19,7 @@ import br.com.developer.model.TimeCoracao;
 import br.com.developer.util.DateUtil;
 
 /**
- * 
+ *
  *
  */
 public class CampanhaServiceTest extends ServiceTestBase {
@@ -25,22 +27,32 @@ public class CampanhaServiceTest extends ServiceTestBase {
     public CampanhaService service;
 
     public CampanhaDao dao;
-    
+
     private TimeCoracaoService timeCoracaoService;
 
     public Event<Campanha> eventoCampanha;
+
+    private JMSContext context;
+
+    private Topic topic;
 
     @Before
     public void setUp() throws Exception {
         service = new CampanhaService();
         dao = Mockito.mock(CampanhaDao.class);
         mockDependencyInjection("dao", dao, service);
-        
+
         eventoCampanha = Mockito.mock(Event.class);
         mockDependencyInjection("eventoCampanha", eventoCampanha, service);
 
         timeCoracaoService = Mockito.mock(TimeCoracaoService.class);
         mockDependencyInjection("timeCoracaoService", timeCoracaoService, service);
+
+//        context = Mockito.mock(JMSContext.class);
+//        mockDependencyInjection("context", context, service);
+//
+//        topic = Mockito.mock(Topic.class);
+//        mockDependencyInjection("topic", topic, service);
     }
 
     @Test
@@ -151,8 +163,9 @@ public class CampanhaServiceTest extends ServiceTestBase {
             final Integer maxResult = 10;
             Mockito.when(dao.listAll(startPosition, maxResult)).thenReturn(campanhas);
 
-            Long timeCoracaoId = 1L;
-            final List<Campanha> campanhasConsultados = service.consultarCampanhasAtivas(new Date(),timeCoracaoId , startPosition, maxResult);
+            final Long timeCoracaoId = 1L;
+            final List<Campanha> campanhasConsultados = service.consultarCampanhasAtivas(new Date(), timeCoracaoId, startPosition,
+                            maxResult);
             Assert.assertNotNull("Campanha não pode ser null.", campanhasConsultados);
 
         } catch (final Exception e) {
@@ -175,19 +188,19 @@ public class CampanhaServiceTest extends ServiceTestBase {
 
             Mockito.when(dao.consultarCampanhasAtivas(DateUtil.toDate("03/10/2017"), startPosition, maxResult)).thenReturn(campanhas);
 
-            Long timeCoracaoId = 1L;
+            final Long timeCoracaoId = 1L;
             final Campanha campanha3 = new Campanha(null, "Campanha 3", DateUtil.toDate("01/10/2017"), DateUtil.toDate("03/10/2017"));
             final TimeCoracao time = new TimeCoracao(timeCoracaoId, null);
             campanha3.setTimeCoracao(time);
-           
+
             final Campanha campanha4 = campanha3;
             campanha4.setId(3L);
             Mockito.when(dao.create(campanha3)).thenReturn(campanha4);
-            
-            Mockito.when( timeCoracaoService.findById(timeCoracaoId)).thenReturn(new TimeCoracao(1L, "Corinthians"));
+
+            Mockito.when(timeCoracaoService.findById(timeCoracaoId)).thenReturn(new TimeCoracao(1L, "Corinthians"));
 
             final Campanha create = service.cadastrarCampanha(campanha3);
-            Mockito.verify(eventoCampanha,Mockito.times(1)).fire(campanha4);
+            Mockito.verify(eventoCampanha, Mockito.times(1)).fire(campanha4);
             Assert.assertNotNull("Campanha não pode ser null.", create.getId());
 
         } catch (final Exception e) {
@@ -214,19 +227,19 @@ public class CampanhaServiceTest extends ServiceTestBase {
             campanhas.add(campanha4);
             Mockito.when(dao.consultarCampanhasAtivas(DateUtil.toDate("03/10/2017"), startPosition, maxResult)).thenReturn(campanhas);
 
-            Long timeCoracaoId = 1L;
+            final Long timeCoracaoId = 1L;
             final Campanha campanha5 = new Campanha(null, "Campanha 5", DateUtil.toDate("01/10/2017"), DateUtil.toDate("03/10/2017"));
             final TimeCoracao time = new TimeCoracao(timeCoracaoId, null);
             campanha5.setTimeCoracao(time);
-            
+
             final Campanha campanha6 = campanha5;
             campanha6.setId(5L);
             Mockito.when(dao.create(campanha5)).thenReturn(campanha6);
 
-            Mockito.when( timeCoracaoService.findById(timeCoracaoId)).thenReturn(new TimeCoracao(1L, "Corinthians"));
-            
+            Mockito.when(timeCoracaoService.findById(timeCoracaoId)).thenReturn(new TimeCoracao(1L, "Corinthians"));
+
             final Campanha create = service.cadastrarCampanha(campanha5);
-            Mockito.verify(eventoCampanha,Mockito.times(1)).fire(campanha6);
+            Mockito.verify(eventoCampanha, Mockito.times(1)).fire(campanha6);
             Assert.assertNotNull("Campanha não pode ser null.", create.getId());
 
         } catch (final Exception e) {

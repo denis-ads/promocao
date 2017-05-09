@@ -57,11 +57,11 @@ public class CampanhaService {
     }
 
     public void verificarConsistenciaVigencias(Campanha campanha, List<Campanha> campanhas) {
-        for (int i = 0; i < campanhas.size(); i++) {
+        final Date dataOriginal = campanha.getFimVigencia();
 
+        for (int i = 0; i < campanhas.size(); i++) {
             int j = 0;
 
-            final Date dataOriginal = campanha.getFimVigencia();
             final Campanha cp = campanhas.get(i);
 
             if (cp.getFimVigencia().compareTo(dataOriginal) <= 0) {

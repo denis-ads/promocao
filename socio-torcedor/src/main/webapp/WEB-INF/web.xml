@@ -25,9 +25,9 @@
     <listener>
         <listener-class>net.bull.javamelody.SessionListener</listener-class>
     </listener>
-    <context-param>
+<!--     <context-param>
         <param-name>javamelody.storage-directory</param-name>
         <param-value>/var/log/Socio-Torcedor</param-value>
     </context-param>
-    
+ -->    
 </web-app>

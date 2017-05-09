@@ -241,6 +241,12 @@
 		<dependency>
 		    <groupId>org.wildfly.swarm</groupId>
 		    <artifactId>messaging</artifactId>
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>org.wildfly.swarm</groupId>
+		    		<artifactId>jgroups</artifactId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
 		<dependency>
 		    <groupId>org.wildfly.swarm</groupId>
@@ -251,6 +257,10 @@
             <artifactId>javamelody-core</artifactId>
             <version>1.65.0</version>
         </dependency>
+        <dependency>
+	      <groupId>org.wildfly.swarm</groupId>
+	      <artifactId>infinispan</artifactId>
+	    </dependency>
 		
 		<!-- <dependency>
             <groupId>log4jwebtracker</groupId>

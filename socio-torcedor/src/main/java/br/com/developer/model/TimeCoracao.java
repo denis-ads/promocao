@@ -2,6 +2,7 @@ package br.com.developer.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "TIME_CORACAO", schema = "public")
 @NamedQueries({@NamedQuery(name = "TimeCoracao.findAll", query = "Select t from TimeCoracao t")})
 @XmlRootElement
+@Cacheable
 public class TimeCoracao implements Serializable {
 
 	private static final long serialVersionUID = -3766288718737067014L;
@@ -31,9 +33,9 @@ public class TimeCoracao implements Serializable {
 
 	/*
 	 * @Id
-	 * 
+	 *
 	 * @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 * 
+	 *
 	 * @Column(name = "id", updatable = false, nullable = false) private Long
 	 * id;
 	 */
@@ -86,7 +88,7 @@ public class TimeCoracao implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TimeCoracao other = (TimeCoracao) obj;
+		final TimeCoracao other = (TimeCoracao) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

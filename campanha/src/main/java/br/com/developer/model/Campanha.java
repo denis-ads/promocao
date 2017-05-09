@@ -3,6 +3,7 @@ package br.com.developer.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 		@NamedQuery(name = "Campanha.campanhasAtivasTimeCoracaoId", query = "Select c from Campanha c where c.fimVigencia >= :dataAtual and c.timeCoracao.id = :timeCoracaoId order by c.fimVigencia"),
 		@NamedQuery(name = "Campanha.campanhasAtivas", query = "Select c from Campanha c where c.fimVigencia >= :dataAtual order by c.fimVigencia")})
 @XmlRootElement
+@Cacheable
 public class Campanha implements Serializable {
 
 	private static final long serialVersionUID = 1866472873357418589L;

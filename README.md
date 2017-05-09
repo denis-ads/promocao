@@ -25,6 +25,13 @@ Uso do Jmeter para testes integrados
 
 * CampanhaEndpoint.jmx
 
+Monitoração
+---------------------
+
+ * [Campanha](http://localhost:8082/campanha/monitoring)
+ 
+ * [Socio Torcedor](http://localhost:8080/socio-torcedor/monitoring)
+  
 
 Definição projeto
 -------------------------------------
@@ -62,6 +69,31 @@ System Requirements
 
 Executando com maven
 -------------------
+#### Banco de dados.
+
+1. Criar banco de dados campanha:
+
+	su postgres
+	psql template1
+	template1=# CREATE USER campanha WITH PASSWORD 'campanha@1';
+	template1=# CREATE DATABASE Campanhadb;
+	template1=# GRANT ALL PRIVILEGES ON DATABASE campanhadb to campanha;
+	template1=# \q
+	
+	su postgres
+	bash-4.3$ psql campanhadb
+
+
+2. Criar banco de dados socio-torcedor:
+
+	su postgres
+	psql template1
+	template1=# CREATE USER sociotorcedor WITH PASSWORD 'socio@1';
+	template1=# CREATE DATABASE sociodb;
+	template1=# GRANT ALL PRIVILEGES ON DATABASE sociodb to sociotorcedor;
+	template1=# \q
+	bash-4.3$ psql sociodb
+
 
 #### Maven
 

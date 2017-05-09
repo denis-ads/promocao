@@ -20,17 +20,17 @@ bin
 .openshift
 */.gitignore
 .gitkeep
-campaign/target
+campanha/target
 socio-torcedor/target
-campaign/.classpath
+campanha/.classpath
 socio-torcedor/.classpath
 
-campaign/.settings
+campanha/.settings
 socio-torcedor/.settings
-campaign/.project
+campanha/.project
 socio-torcedor/.project
 socio-torcedor/.tern-project
-campaign/.tern-project
+campanha/.tern-project
 
 .idea
 *.ipr

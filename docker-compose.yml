@@ -1,0 +1,82 @@
+version: "3.1"
+
+services:
+  databaseSocioTorcedor:
+    build: 
+       context: ./database
+    image: socio_db
+    environment:
+      POSTGRES_USER: sociotorcedor
+      POSTGRES_DB_PASSWORD_FILE: /run/secrets/socio_password
+      POSTGRES_DB: sociodb
+    ports:
+      - "5432:5432" 
+    networks:
+      - back-tier
+    secrets:
+      - postgres_password
+    #restart: always
+  
+  databaseCampanha:
+    build: 
+       context: ./database
+    image: campanha_db
+    environment:
+      POSTGRES_USER: campanha
+      POSTGRES_DB_PASSWORD_FILE: /run/secrets/campanha_password
+      POSTGRES_DB: campanha
+    ports:
+      - "5432:5432" 
+    networks:
+      - back-tier
+    secrets:
+      - socio_password
+    #restart: always
+  appserver:
+    build:
+       context: .
+       dockerfile: app/Dockerfile
+    image: campanha_app
+    links:
+      - database:campanha_db
+    ports:
+      - "8082:8082" 
+    networks:
+      - front-tier
+      - back-tier
+    volumes:
+
+    secrets:
+      - campanha_password
+    #restart: always
+    volumes:
+    
+  appserver:
+    build:
+       context: .
+       dockerfile: app/Dockerfile
+    image: socio_app
+    
+    links:
+      - database:socio_db
+    # open ports for tomcat and remote debugging
+    ports:
+      - "8080:8080" 
+    networks:
+      - front-tier
+      - back-tier
+    volumes:
+
+    secrets:
+      - postgres_password
+    #restart: always
+    volumes:
+
+networks:
+  back-tier:
+
+secrets:
+  postgres_password:
+    file: ./password/campanha_password
+  postgres_password:
+    file: ./passwor/socio_password

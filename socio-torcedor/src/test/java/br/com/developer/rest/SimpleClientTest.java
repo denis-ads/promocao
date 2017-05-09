@@ -28,7 +28,7 @@ public class SimpleClientTest {
     public void teetete() {
         try {
             final Client client = ClientBuilder.newBuilder().build();
-            final List<Campanha> list = client.target("http://localhost:8082/campaign/rest/campanhas").request().accept(
+            final List<Campanha> list = client.target("http://localhost:8082/campanha/rest/campanhas").request().accept(
                             MediaType.APPLICATION_JSON).get(new GenericType<List<Campanha>>() {});
             for (final Campanha campanha : list) {
                 System.out.println(campanha);

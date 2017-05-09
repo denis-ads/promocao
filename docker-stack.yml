@@ -1,0 +1,83 @@
+on: "3.2"
+
+services:
+  databaseCampanha:
+    image: promocao/campanhadb
+    environment:
+      POSTGRES_USER: campanha
+      POSTGRES_DB_PASSWORD_FILE: /run/secrets/campanha_password
+      POSTGRES_DB: campanhadb
+    networks:
+      - back-tier
+    secrets:
+      - campanha_password
+    deploy:
+      placement:
+        constraints:
+          - 'node.role == worker'
+
+  databaseSocio:
+    image: promocao/sociodb
+    environment:
+      POSTGRES_USER: sociotorcedor
+      POSTGRES_DB_PASSWORD_FILE: /run/secrets/socio_password
+      POSTGRES_DB: sociodb
+    networks:
+      - back-tier
+    secrets:
+      - socio_password
+    deploy:
+      placement:
+        constraints:
+          - 'node.role == worker'
+
+  appserverCampanha:
+    image: promocao/campanha:latest 
+    ports:
+      - "80:8082" 
+    networks:
+      - back-tier
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+      placement:
+        constraints:
+          - 'node.role == worker'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    secrets:
+      - campanha_password
+
+  appserver:
+    image: promocao/socio:latest 
+    ports:
+      - "80:8080" 
+    networks:
+      - back-tier
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+      placement:
+        constraints:
+          - 'node.role == worker'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    secrets:
+      - socio_password
+
+networks:
+  back-tier:
+
+secrets:
+  campanha_password:
+    external: true
+  socio_password:
+    external: true

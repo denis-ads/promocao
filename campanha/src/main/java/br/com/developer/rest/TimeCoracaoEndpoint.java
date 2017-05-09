@@ -123,7 +123,7 @@ public class TimeCoracaoEndpoint {
     }
 }
     
-//    @PersistenceContext(unitName = "campaign-persistence-unit")
+//    @PersistenceContext(unitName = "campanha-persistence-unit")
 //	private EntityManager em;
 //
 //	@POST

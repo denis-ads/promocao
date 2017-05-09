@@ -24,7 +24,7 @@
           </elementProp>
           <elementProp name="contexto-campanha" elementType="Argument">
             <stringProp name="Argument.name">contexto-campanha</stringProp>
-            <stringProp name="Argument.value">/campaign/rest</stringProp>
+            <stringProp name="Argument.value">/campanha/rest</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="contexto-socio-torcedor" elementType="Argument">

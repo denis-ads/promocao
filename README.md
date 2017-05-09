@@ -27,12 +27,24 @@ Uso do Jmeter para testes integrados
 * CampanhaEndpoint.jmx
 
 
-Arquitetura
+Definição projeto
 -------------------------------------
 
-Projeto foi divido em 2 microserviços, Campanha e SocioTorcedor.
-Cada módulo tem seu proprio banco de dados, porém a estrategia de compartilhamento das informações da entidade TimeCoração e Campanha deveria utilizar uma estratégia de cache distribuído usando jboss infinispan ou apache kafka.
+* Projeto foi divido em 2 microserviços, Campanha e SocioTorcedor.
 
+* Cada módulo tem seu proprio banco de dados, porém a estrategia de compartilhamento das informações da entidade TimeCoração e Campanha deveria utilizar uma estratégia de cache distribuído usando jboss infinispan ou apache kafka.
+
+* Processo de notifiação de atualização de Campanha deveria utilizar jms sendo acionado pelo CDI @Observer.
+
+* Os projetos foram dividino nos pacotes:
+	* br.com.developer.dao -> Persistência
+	* br.com.developer.event -> Eventos
+	* br.com.developer.exception -> Exceções
+	* br.com.developer.jms -> Mensageria
+	* br.com.developer.model -> Entidades
+	* br.com.developer.rest -> Exposição recursos rest.
+	* br.com.developer.services ->Negocio
+	* br.com.developer.util -> Utilitarios
 
 
 System Requirements

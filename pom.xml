@@ -47,7 +47,7 @@
 
 	<modules>
 		<!-- All the modules that require nothing but WildFly -->
-		<module>campaign</module>
+		<module>campanha</module>
 		<module>socio-torcedor</module>
 	</modules>
 	<dependencyManagement>
@@ -134,7 +134,7 @@
 									</properties>
 								</process>
 								<process>
-									<artifactId>campaign</artifactId>
+									<artifactId>campanha</artifactId>
 									<properties>
 										<swarm.http.port>8082</swarm.http.port>
 									</properties>

@@ -18,7 +18,7 @@ public abstract class BaseDao<T, K> {
     private static final String SELECT_ALL = ".selectAll";
     //private static final String COUNT = ".count";
 
-    @PersistenceContext(unitName = "campaign-persistence-unit")
+    @PersistenceContext(unitName = "campanha-persistence-unit")
     protected EntityManager em;
 
     public void flush() {

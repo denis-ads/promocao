@@ -1,7 +1,7 @@
 swarm:
   datasources:
     data-sources:
-      CampaignDS:
+      CampanhaDS:
         driver-name: org.postgresql
         connection-url: jdbc:postgresql://localhost:5432/campanhadb
         user-name: campanha

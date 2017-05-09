@@ -67,7 +67,7 @@ public class UsuarioService {
     private List<Campanha> buscarCampanhasDisponiveis() {
         
         final Client client = ClientBuilder.newBuilder().build();
-        String string = "http://localhost:8082/campaign/rest/campanhas";
+        String string = "http://localhost:8082/campanha/rest/campanhas";
         final List<Campanha> list = client.target(string).request().accept(MediaType.APPLICATION_JSON).get(
                         new GenericType<List<Campanha>>() {});
         return list;
@@ -85,7 +85,7 @@ public class UsuarioService {
 
         if(campanhas == null ){
             final Client client = ClientBuilder.newBuilder().build();
-            String string = "http://localhost:8082/campaign/rest/campanhas?timeCoracaoId=" + usuario.get().getTimeCoracao().getId();
+            String string = "http://localhost:8082/campanha/rest/campanhas?timeCoracaoId=" + usuario.get().getTimeCoracao().getId();
             campanhas = client.target(string).request().accept(MediaType.APPLICATION_JSON).get(
                             new GenericType<List<Campanha>>() {});
             

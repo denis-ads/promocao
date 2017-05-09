@@ -1,7 +1,5 @@
 FROM postgres
 
-RUN mkdir -p /images/
-
 COPY pg_hba.conf /usr/share/postgresql/9.6/
 COPY postgresql.conf /usr/share/postgresql/9.6/
 ADD  docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/

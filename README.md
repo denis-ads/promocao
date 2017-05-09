@@ -10,9 +10,6 @@ Introdução
 Esse projeto é dividido em 2 modulos, Campanha e Socio Torcedor.
 
 
-* [Configure Maven](https://github.com/jboss-developer/jboss-developer-shared-resources/blob/master/guides/CONFIGURE_MAVEN.md): How to configure the Maven repository for use by the quickstarts.
-* [Postgres](Roteiro para criação banco de dados em Orientacao/ProcedimentosBD).
-
 Documentação API
 ---------------------------------
 Utilizando Swagger Editor: http://editor.swagger.io

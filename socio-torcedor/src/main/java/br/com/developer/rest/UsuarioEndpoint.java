@@ -88,7 +88,6 @@ public class UsuarioEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult) {
         try {
-            System.out.println("entrou denis");
             return Response.ok(usuarioService.listAll(startPosition, maxResult)).build();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());

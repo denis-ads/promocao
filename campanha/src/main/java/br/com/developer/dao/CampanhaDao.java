@@ -75,8 +75,6 @@ public class CampanhaDao extends BaseDao<Campanha, Long>{
     
     public List<Campanha> consultarCampanhasAtivasTimeCoracaoId(Date data, Long timeCoracaoId, Integer startPosition, Integer maxResult) throws DBException {
         try {
-            System.out.println("consultarCampanhasAtivasTimeCoracaoId:  " + timeCoracaoId);
-
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Campanha> criteria = cb.createQuery(Campanha.class);
             Root<Campanha> root = criteria.from(Campanha.class);
@@ -96,7 +94,6 @@ public class CampanhaDao extends BaseDao<Campanha, Long>{
             criteria.where(preds);
 
              List<Campanha> campanhas = em.createQuery(criteria).getResultList();
-             System.out.println("Campanhas: " + campanhas.size());
              return campanhas;
         } catch (final Exception e) {
             throw new DBException(e);
